@@ -39,14 +39,21 @@ output "vm_ips" {
 
 
 
+resource "null_resource" "create_inventory_dir" {
+  provisioner "local-exec" {
+    command = "mkdir -p /var/lib/jenkins/workspace/terra-multi-ans"
+  }
+}
+
 resource "null_resource" "generate_inventory" {
+  depends_on = [null_resource.create_inventory_dir]
   provisioner "local-exec" {
     command = <<EOT
       echo 'all:' > /var/lib/jenkins/workspace/terra-multi-ans/inventory.gcp.yml
       echo '  children:' >> /var/lib/jenkins/workspace/terra-multi-ans/inventory.gcp.yml
       echo '    web:' >> /var/lib/jenkins/workspace/terra-multi-ans/inventory.gcp.yml
       echo '      hosts:' >> /var/lib/jenkins/workspace/terra-multi-ans/inventory.gcp.yml
-      for i in $(seq 0 ${var.instance_count - 1}); do
+      for i in $(seq 0 2); do
         INSTANCE_IP=$(terraform output -json vm_ips | jq -r ".[$i]")
         echo "        web_ansible-$((i + 1)):" >> /var/lib/jenkins/workspace/terra-multi-ans/inventory.gcp.yml
         echo "          ansible_host: \$INSTANCE_IP" >> /var/lib/jenkins/workspace/terra-multi-ans/inventory.gcp.yml
@@ -55,7 +62,5 @@ resource "null_resource" "generate_inventory" {
       done
     EOT
   }
-
-  depends_on = [google_compute_instance.centos_vm]
 }
 
