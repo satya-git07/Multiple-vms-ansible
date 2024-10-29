@@ -58,3 +58,4 @@ resource "null_resource" "generate_inventory" {
 
   depends_on = [google_compute_instance.centos_vm]
 }
+
