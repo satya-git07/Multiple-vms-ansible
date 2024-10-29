@@ -32,10 +32,11 @@ resource "google_compute_instance" "centos_vm" {
   tags = ["http-server"]
 }
 
-# Output the instance IPs for the dynamic inventory
 output "vm_ips" {
-  value = google_compute_instance.centos_vm[*].network_interface[0].access_config[0].nat_ip
+  value = [for vm in google_compute_instance.centos_vm : vm.network_interface[0].network_ip]
 }
+
+
 
 
 
