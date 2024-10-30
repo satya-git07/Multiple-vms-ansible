@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Wait for VM to be ready') {
             steps {
-                sleep(time: 60, unit: "SECONDS")  // Adjust this time based on your VM startup time
+                sleep(time: 30, unit: "SECONDS")  // Adjust this time based on your VM startup time
             }
         }
         stage('Generate and Update Ansible Inventory') {
