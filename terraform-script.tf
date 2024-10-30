@@ -37,7 +37,6 @@ output "vm_ips" {
 }
 
 resource "null_resource" "generate_inventory" {
-  depends_on = [null_resource.create_inventory_dir]
   provisioner "local-exec" {
     command = <<EOT
       echo 'all:' > /var/lib/jenkins/workspace/terra-multi-ans/inventory.gcp.yml
