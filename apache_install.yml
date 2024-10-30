@@ -1,5 +1,5 @@
 ---
-name: Install Apache on GCP VM
+- name: Install Apache on GCP VM
   hosts: web
   become: yes
   tasks:
