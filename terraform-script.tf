@@ -36,16 +36,6 @@ output "vm_ips" {
   value = [for vm in google_compute_instance.centos_vm : vm.network_interface[0].network_ip]
 }
 
-
-
-
-
-resource "null_resource" "create_inventory_dir" {
-  provisioner "local-exec" {
-    command = "mkdir -p /var/lib/jenkins/workspace/terra-multi-ans"
-  }
-}
-
 resource "null_resource" "generate_inventory" {
   depends_on = [null_resource.create_inventory_dir]
   provisioner "local-exec" {
